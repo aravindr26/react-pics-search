@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import SearchBar from "./components/SearchBar";
+import ImageList from "./components/ImageList";
+import searchImages from "./utils/unsplashApi";
 
 function App() {
+
+  const [images, setImages] = useState([]);
+
+  const handleChange = async(searchText) => {
+    const response = await searchImages(searchText);
+    if(response && response.results && response.results.length > 0) {
+      setImages(response.results);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+        
+        <SearchBar searchImage={handleChange}/>
+        <ImageList images={images}/>
     </div>
   );
 }
